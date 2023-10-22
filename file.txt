@@ -1,3 +1,10 @@
+<<<<<<< HEAD
 "hi" tady to nebude
 napisu treba tohle
 je to dakt divny
+=======
+"hi" ahoj
+toto je test
+prepisu tuhle lajnu
+ale co už
+>>>>>>> master
