@@ -128,4 +128,71 @@ def sorting_words(x: list[str], key=0) -> list[str]:
     return x
 
 
+def reverse(s: str) -> str:
+    """Returns reversed string."""
+    return s[::-1]
+
+
+def count_words(text: str, unique=True) -> int:
+    "Returns number of words in given string"
+
+    new_text = ""
+    for i in text:
+        if i.isalpha() or i == " ":
+            new_text += i
+    test_list = new_text.split()
+    if unique:
+        return len(set(test_list))
+    else:
+        return len(test_list)
+    
+
+def eval_string(text: str) -> float:
+    "evaluate string"
+    
+    def eval_list(expression: list) -> float:
+        bracket_counter = 0
+        sub_expr = []
+        new_expr = []
+        expression.append("END")
+        for el in expression:
+            if el in ["+", "-", "END"]:
+                my_num = sub_expr[0]
+                for i, el2 in enumerate(sub_expr[1::2]):
+                    if el2 == "*":
+                        my_num = my_num*sub_expr[i+2]
+                    if el2 == "/":
+                        my_num = my_num/sub_expr[i+2]
+                new_expr.extend([my_num, el])
+                sub_expr = []
+            else: 
+                sub_expr.append(el)
+        expression = new_expr
+        my_num = expression[0]
+        expression.pop()
+        for i, el in enumerate(expression[1::2]):
+            if el == "+":
+                my_num += expression[2*i+1]
+            if el == "-":
+                my_num -= expression[2*i+1]
+        return my_num
+
+    operators = ["+", "-", "*", "/", "(", ")"]
+    expression = []
+    num = ""
+    for i in text:
+        if i in operators:
+            expression.extend([float(num), i])
+            num = ""
+        else:
+            num += i
+    expression.append(float(num))
+    print(eval_list(expression))
+            
+    
+    
+
+if __name__ == "__main__":
+    print(eval_string("4+5/8+1.3"))
+
 print(sorting_words(["jablko", "jahoda", "bagr", "bricho", "svedsko"]))
