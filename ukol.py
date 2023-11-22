@@ -188,9 +188,48 @@ def eval_string(text: str) -> float:
             num += i
     expression.append(float(num))
     print(eval_list(expression))
-            
+
+from typing import List, Dict
+from math import factorial
+
+n = 5
+
+def gen_matrix(n: int) -> List[List[int]]:
+    return [[(a+1)%2]*n for a in range(n)]
+
+
+def intersection(a: List, b: List) -> List:
+    return [i for i in a if i in b]
+
+
+def palyndroms(text: str) -> List[str]:
+    return [word for word in text.upper().split() if word == word[::-1] ]
+
+
+def dot(a: List[int], b: List[int]) -> int:
+    if len(a) != len(b):
+        return None
+    return sum(x*y for x, y in zip(a, b))
+
+
+def matrix_mult(a: List[List], b: List[List]) -> List[List]:
+    def check_mat(c: List[List[int]]):
+        if not all([len(c[i]) == len(c[0]) for i in range(len(c))]):
+            raise Exception("element is not a valid matrix")
+    check_mat(a), check_mat(b)
+    m, n, p = len(a), len(a[0]), len(b[0])
+    if n != len(b):
+        return None
+    return [[dot(a[i], [b[k][j] for k in range(n)]) for j in range(p)] for i in range(m)]
+
+
+def sort_freq(li: list[str]) -> list[str]:
+    return [j for _,j in sorted([(len(i), i) for i in li])]
     
-    
+
+def pascal(n: int):
+    return [[factorial(i)/(factorial(j)*factorial(i-j)) for j in range(i+1)] for i in range(n)]
+
 
 if __name__ == "__main__":
     print(eval_string("4+5/8+1.3"))
