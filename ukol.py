@@ -235,3 +235,66 @@ if __name__ == "__main__":
     print(eval_string("4+5/8+1.3"))
 
 print(sorting_words(["jablko", "jahoda", "bagr", "bricho", "svedsko"]))
+
+import datetime
+
+
+class RGBColor():
+    """
+    A class representing RGB colors
+    """
+
+    def __init__(self, r, g, b):
+        self.colors = (r, g, b)
+
+    
+    def is_dark(self):
+        return sum(self.colors) < 100
+    
+    def __iter__(self):
+        return self.colors.__iter__()
+    
+
+class WeatherStation():
+    def __init__(self, name: str, location: tuple, temperature: float, wind_speed: float):
+        self.name = name
+        self.location = location
+        self.temperature = temperature
+        self.wind_speed = wind_speed
+        self.historical_data = {}
+
+    def get_temperature(self):
+        return self.temperature
+    
+    def get_wind_speed(self):
+        return self.wind_speed
+    
+    def __add__(self, other: "WeatherStation") -> "WeatherStation":
+        return WeatherStation(self.name + other.name,
+                              tuple(map(lambda x, y: x+y, self.location, other.location)),
+                              self.temperature + other.temperature,
+                              self.wind_speed + other.wind_speed)
+
+    def __lt__(self, other: "WeatherStation") -> tuple:
+        return (self.temperature < other.temperature, self.wind_speed < other.wind_speed)
+    
+    def __repr__(self):
+        return f"{self.name}: {str(self.temperature)}, {self.wind_speed}"
+
+    def add_historical_data(self, date: datetime.date, temperature: float, wind_speed: float):
+        self.add_historical_data[date] = (temperature, wind_speed)
+
+    def get_historical_data(self, date: datetime.date):
+        return self.historical_data.get(date, None)
+    
+    def get_all_historical_data(self):
+        return self.historical_data
+
+
+if __name__ == "__main__":
+    my_station = WeatherStation("lysa", (10, 20), 40, 20)
+    second_station = WeatherStation("Praha", (5, 15), 15, 10)
+    # print(my_station.get_temperature())
+    # humus = my_station+second_station
+    # print(humus, humus.location)
+
