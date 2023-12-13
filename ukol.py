@@ -298,3 +298,111 @@ if __name__ == "__main__":
     # humus = my_station+second_station
     # print(humus, humus.location)
 
+
+class Card():
+    values = {"1":1,"2":2,"3":3,"4":4,
+              "5":5,"6":6,"7":7,"8":8,
+              "9":9, "10":10, "J":11,
+              "Q":12, "K":13, "A":14}
+    
+    def __init__(self, value: str) -> None:
+        if value not in Card.values.keys():
+            raise ValueError("The value is not an appropriate string value")
+        self.string_value = value
+        self.integer_value = Card.values[value]
+
+    def __repr__(self) -> str:
+        return f"Card {self.string_value}"
+    
+    def __lt__(self, other: "Card"):
+        return self.integer_value < other.integer_value
+
+    def __gt__(self, other: "Card"):
+         return self.integer_value > other.integer_value
+    
+    def __eq__(self, other: "Card"):
+        return self.integer_value == other.integer_value
+    
+    def __hash__(self) -> int:
+        return hash(self.integer_value)
+    
+
+class CardsWithSuits(Card):
+    comp_suits = {"S":0, "C":1, "H":2, "D":3}
+    def __init__(self, value: str, suit: str) -> None:
+        super().__init__(value)
+        self.suit = suit
+
+    def __repr__(self) -> str:
+        return f"Card ({self.string_value, self.suit})"
+    
+    def __lt__(self, other: "CardsWithSuits"):
+        if self.suit == other.suit:
+            return super().__lt__(other)
+        else:
+            return CardsWithSuits.comp_suits[self.suit] < CardsWithSuits.comp_suits[self.suit]
+        
+    def __eq__(self, other: "CardsWithSuits"):
+        return (self.integer_value, self.suit) == (other.integer_value, other.suit)
+            
+    def __gt__(self, other: "CardsWithSuits"):
+        if self.suit == other.suit:
+            return super().__gt__(other)
+        else:
+            return CardsWithSuits.comp_suits[self.suit] > CardsWithSuits.comp_suits[self.suit]
+        
+    # def __hash__(self) -> int:
+    #     return hash(self.integer_value)
+
+
+class Hand():
+    values = {"1":1,"2":2,"3":3,"4":4,
+              "5":5,"6":6,"7":7,"8":8,
+              "9":9, "10":10, "J":11,
+              "Q":12, "K":13, "A":14}
+    
+    def __init__(self, value: str) -> None:
+        self.cards = value
+        self.rank = self.get_rank()
+
+    def get_rank(self):
+        set_vards = set(list(self.value))
+        if len(set_vards) == 1:
+            return 6
+        if len(set_vards) == 2:
+            if self.value.count(self.value[0]) in (1, 4):
+                return 5
+            else:
+                return 4
+        if len(set_vards) == 3:
+            if max(self.value,key=self.value.count) == 3:
+                return 3
+            else:
+                return 2
+        if len(set_vards) == 4:
+            return 1
+        if len(set_vards) == 5:
+            return 0
+        
+    def __lt__(self, other: "Card"):
+        return self.integer_value < other.integer_value
+
+    def __gt__(self, other: "Card"):
+         return self.integer_value > other.integer_value
+    
+    def __eq__(self, other: "Card"):
+        return self.integer_value == other.integer_value
+        
+        
+
+
+
+
+
+
+if __name__ == "__main__":
+    my_card = CardsWithSuits("9", "H")
+    my_card1 = CardsWithSuits("K", "H")
+    my_card2 = CardsWithSuits("K", "H")
+    print(my_card2 == my_card1)
+    print(set([my_card, my_card1, my_card2]))
